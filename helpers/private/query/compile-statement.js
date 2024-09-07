@@ -15,8 +15,13 @@
 // Transform a Waterline Query Statement into a SQL query.
 
 var PG = require('machinepack-postgresql');
+var modifyWhereClause = require('./modify-where-clause');
 
-module.exports = function compileStatement(statement) {
+module.exports = function compileStatement(statement, meta) {
+  if (statement.where) {
+    statement.where = modifyWhereClause(statement.where, meta);
+  }
+
   var report = PG.compileStatement({
     statement: statement
   }).execSync();

@@ -142,7 +142,7 @@ module.exports = require('machine').build({
     // Compile the original Waterline Query
     var compiledQuery;
     try {
-      compiledQuery = Helpers.query.compileStatement(statement);
+      compiledQuery = Helpers.query.compileStatement(statement, query.meta);
     } catch (e) {
       return exits.error(e);
     }
