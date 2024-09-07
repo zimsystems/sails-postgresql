@@ -56,6 +56,6 @@ module.exports = function modifyWhereClause(whereClause, meta) {
     return branch;
   })(whereClause);
 
-  // Return the modified Postgres query filter.
+  // Return the modified query filter.
   return queryFilter;
 };
