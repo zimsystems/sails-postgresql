@@ -17,12 +17,12 @@
 var _ = require("@sailshq/lodash");
 
 module.exports = function modifyWhereClause(whereClause, meta) {
-  // Handle empty `where` clause.
-  if (_.keys(whereClause).length === 0) {
+  // Handle empty `where` clause and missing meta.
+  if (_.keys(whereClause).length === 0 || !meta) {
     return whereClause;
   }
 
-  var makeLikeModifierCaseInsensitive = meta && meta.makeLikeModifierCaseInsensitive;
+  var makeLikeModifierCaseInsensitive = meta.makeLikeModifierCaseInsensitive;
 
   // Recursively modify the `where` clause.
   var queryFilter = (function recurse(branch) {
