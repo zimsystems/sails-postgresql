@@ -47,6 +47,38 @@ describe('Unit Tests ::', function() {
       });
     });
 
+    it('should ensure the record is deleted with case insensitive like', function(done) {
+      var query = {
+        using: 'test_destroy',
+        criteria: {
+          where: {
+            fieldB: {
+              like: 'BAR'
+            }
+          }
+        },
+        meta: {
+          makeLikeModifierCaseInsensitive: true
+        }
+      };
+
+      Adapter.destroy('test', query, function(err) {
+        if (err) {
+          return done(err);
+        }
+
+        Adapter.find('test', query, function(err, results) {
+          if (err) {
+            return done(err);
+          }
+
+          assert.equal(results.length, 0);
+
+          return done();
+        });
+      });
+    });
+
     // Look into the bowels of the PG Driver and ensure the Create function handles
     // it's connections properly.
     it('should release its connection when completed', function(done) {

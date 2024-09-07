@@ -88,6 +88,34 @@ describe('Unit Tests ::', function() {
       });
     });
 
+    it('should be case insensitive when `meta.makeLikeModifierCaseInsensitive` is true', function(done) {
+      var query = {
+        using: 'test_find',
+        criteria: {
+          where: {
+            fieldB: {
+              like: 'bar_2'
+            }
+          }
+        },
+        meta: {
+          makeLikeModifierCaseInsensitive: true
+        }
+      };
+
+      Adapter.find('test', query, function(err, results) {
+        if (err) {
+          return done(err);
+        }
+
+        assert(_.isArray(results));
+        assert.equal(results.length, 1);
+        assert.equal(_.first(results).fieldB, 'bAr_2');
+
+        return done();
+      });
+    });
+
     it('should return `ref` type attributes unchanged', function(done) {
       var query = {
         using: 'test_find',

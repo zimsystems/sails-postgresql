@@ -81,6 +81,39 @@ describe('Unit Tests ::', function() {
       });
     });
 
+    it('should be case insensitive when `meta.makeLikeModifierCaseInsensitive` is true', function(done) {
+      var query = {
+        using: 'test_update',
+        criteria: {
+          where: {
+            fieldB: {
+              like: 'bar_2'
+            }
+          }
+        },
+        valuesToSet: {
+          fieldA: 'FooBar2'
+        },
+        meta: {
+          fetch: true,
+          makeLikeModifierCaseInsensitive: true
+        }
+      };
+
+      Adapter.update('test', query, function(err, results) {
+        if (err) {
+          return done(err);
+        }
+
+        assert(_.isArray(results));
+        assert.equal(results.length, 1);
+        assert.equal(_.first(results).fieldA, 'FooBar2');
+        assert.equal(_.first(results).fieldB, 'bAr_2');
+
+        return done();
+      });
+    });
+
     // Look into the bowels of the PG Driver and ensure the Create function handles
     // it's connections properly.
     it('should release its connection when completed', function(done) {
